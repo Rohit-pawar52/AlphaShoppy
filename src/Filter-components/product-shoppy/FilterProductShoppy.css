@@ -1,0 +1,79 @@
+.filter-product-shoppy-swiper {
+    position: relative;
+    display: flex;
+  }
+  
+  .filter-product-shoppy-slide {
+    text-align: center;
+    margin-bottom: 20px;
+    border: 1px solid rgb(235, 232, 232);
+    border-radius: 5px;
+    position: relative;
+  }
+  
+  .filter-product-shoppy-image {
+    width: 160px;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .filter-product-shoppy-name {
+    margin-top: 8px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    font-size: 24px;
+  }
+  
+  .filter-product-shoppy-add-to-cart-btn {
+    background-color: #49A6A2;
+    color: white;
+    font-weight: 500;
+    padding: 5px 22px;
+    font-size: small;
+    border-radius: 5px;
+  }
+  
+  .filter-product-shoppy-discount {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    background-color: #49A6A2;
+    color: white;
+    font-weight: 500;
+    padding: 5px 10px;
+    font-size: small;
+    border-right: 1px solid #49A6A2;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  
+  .filter-product-shoppy-heart {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+  }
+  
+  .filter-product-shoppy-data {
+    padding-top: 5px;
+  }
+  
+  .filter-product-shoppy-data:hover {
+    transform: translateY(-15px);
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .filter-products-container{
+    border: 2px solid rgb(237, 233, 233);
+    box-shadow: inset;
+    margin: 25px;
+  }

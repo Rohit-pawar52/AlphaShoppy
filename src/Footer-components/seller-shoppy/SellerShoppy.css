@@ -1,0 +1,72 @@
+.Seller-Shoppy-head {
+    background-color: #14949d59;
+    display: flex;
+    align-items: center;
+    padding: 20px 0px;
+}
+.Seller-Shoppy-product {
+    text-align: center;
+    margin-bottom: 20px;
+    border: 1px solid rgb(235, 232, 232);
+    border-radius: 5px;
+}
+
+.Seller-Shoppy-image {
+    width: 160px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.Seller-Shoppy-name {
+    margin-top: 8px;
+    font-size: 16px;
+    color: #333;
+}
+
+.Seller-Shoppy-add-to-cart-btn {
+    background-color: #49A6A2; 
+    color: white;
+    font-weight: 500;
+    padding: 5px 22px;
+    font-size: small;
+    border-radius: 5px;
+}
+
+.Seller-Shoppy-data {
+    padding-top: 5px;
+}
+
+.Seller-Shoppy-dropdowns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    /* border: 1px solid #ccc;
+    background-color: #f8f8f8; */
+}
+
+.Seller-Shoppy-sort-dropdown, .Seller-Shoppy-show-dropdown {
+    display: flex;
+    align-items: center;
+}
+
+.Seller-Shoppy-dropdown-label {
+    margin-right: 5px;
+    color: #333;
+    font-size: 16px;
+}
+
+.Seller-Shoppy-dropdown {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.Seller-Shoppy-dropdown:hover {
+    border-color: #888;
+}

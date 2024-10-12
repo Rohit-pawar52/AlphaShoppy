@@ -1,0 +1,138 @@
+{
+  "error": false,
+  "msg": "countries and codes retrieved",
+  "data": [
+    {
+      "name": "India",
+      "code": "IN",
+      "dial_code": "+91",
+      "flag": "https://flagcdn.com/w320/in.png"
+    },
+    {
+      "name": "Afghanistan",
+      "code": "AF",
+      "dial_code": "+93",
+      "flag": "https://flagcdn.com/w320/af.png"
+    },
+    {
+      "name": "Albania",
+      "code": "AL",
+      "dial_code": "+355",
+      "flag": "https://flagcdn.com/w320/al.png"
+    },
+    {
+      "name": "Algeria",
+      "code": "DZ",
+      "dial_code": "+213",
+      "flag": "https://flagcdn.com/w320/dz.png"
+    },
+    {
+      "name": "American Samoa",
+      "code": "AS",
+      "dial_code": "+1 684",
+      "flag": "https://flagcdn.com/w320/as.png"
+    },
+    {
+      "name": "Andorra",
+      "code": "AD",
+      "dial_code": "+376",
+      "flag": "https://flagcdn.com/w320/ad.png"
+    },
+    {
+      "name": "Angola",
+      "code": "AO",
+      "dial_code": "+244",
+      "flag": "https://flagcdn.com/w320/ao.png"
+    },
+    {
+      "name": "Anguilla",
+      "code": "AI",
+      "dial_code": "+1 264",
+      "flag": "https://flagcdn.com/w320/ai.png"
+    },
+    {
+      "name": "Antarctica",
+      "code": "AQ",
+      "dial_code": "+672",
+      "flag": "https://flagcdn.com/w320/aq.png"
+    },
+    {
+      "name": "Antigua and Barbuda",
+      "code": "AG",
+      "dial_code": "+1268",
+      "flag": "https://flagcdn.com/w320/ag.png"
+    },
+    {
+      "name": "Argentina",
+      "code": "AR",
+      "dial_code": "+54",
+      "flag": "https://flagcdn.com/w320/ar.png"
+    },
+    {
+      "name": "Armenia",
+      "code": "AM",
+      "dial_code": "+374",
+      "flag": "https://flagcdn.com/w320/am.png"
+    },
+    {
+      "name": "Aruba",
+      "code": "AW",
+      "dial_code": "+297",
+      "flag": "https://flagcdn.com/w320/aw.png"
+    },
+    {
+      "name": "Australia",
+      "code": "AU",
+      "dial_code": "+61",
+      "flag": "https://flagcdn.com/w320/au.png"
+    },
+    {
+      "name": "Austria",
+      "code": "AT",
+      "dial_code": "+43",
+      "flag": "https://flagcdn.com/w320/at.png"
+    },
+    {
+      "name": "Azerbaijan",
+      "code": "AZ",
+      "dial_code": "+994",
+      "flag": "https://flagcdn.com/w320/az.png"
+    },
+    {
+      "name": "Bahamas",
+      "code": "BS",
+      "dial_code": "+1 242",
+      "flag": "https://flagcdn.com/w320/bs.png"
+    },
+    {
+      "name": "Bahrain",
+      "code": "BH",
+      "dial_code": "+973",
+      "flag": "https://flagcdn.com/w320/bh.png"
+    },
+    {
+      "name": "Bangladesh",
+      "code": "BD",
+      "dial_code": "+880",
+      "flag": "https://flagcdn.com/w320/bd.png"
+    },
+    {
+      "name": "Barbados",
+      "code": "BB",
+      "dial_code": "+1 246",
+      "flag": "https://flagcdn.com/w320/bb.png"
+    },
+    {
+      "name": "Belarus",
+      "code": "BY",
+      "dial_code": "+375",
+      "flag": "https://flagcdn.com/w320/by.png"
+    },
+    {
+      "name": "Belgium",
+      "code": "BE",
+      "dial_code": "+32",
+      "flag": "https://flagcdn.com/w320/be.png"
+    }
+  ]
+}

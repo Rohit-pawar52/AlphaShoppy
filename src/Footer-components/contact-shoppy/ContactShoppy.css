@@ -1,0 +1,67 @@
+.contact-shoppy-head {
+  background-color: #14949d59;
+    display: flex;
+    align-items: center;
+    padding: 20px 0px;
+  }
+  
+.contact-shoppy-form {
+    width: 40%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .contact-shoppy-form p {
+    text-align: center;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    font-size: larger;
+  }
+  .form-group label input{
+    margin-bottom: 20px;
+    margin: 10px;
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .form-field {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .form-field:last-child {
+    margin-right: 0;
+  }
+  
+  .form-field [type="text"], input[type="email"], textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 2px solid  #d8e3e2;
+  }
+
+  .submit-contact {
+    background-color: #00796b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  }
+  .form-field input:hover{
+    border: 2px solid #49A6A2;
+  }
+  textarea:hover{
+    border: 2px solid #49A6A2;
+  }
+  
+  .submit-contact:hover {
+    background-color: #005a4c;
+  }
+  

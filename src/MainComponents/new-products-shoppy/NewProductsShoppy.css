@@ -1,0 +1,98 @@
+.new-product-special-swiper {
+  position: relative;
+}
+
+.new-product-special-slide {
+  text-align: center;
+  margin-bottom: 20px;
+  border: 1px solid rgb(235, 232, 232);
+  border-radius: 5px;
+}
+
+.new-product-special-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.new-product-special-name {
+  margin-top: 8px;
+  font-size: 16px;
+  color: #333;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 24px; 
+}
+
+
+.new-product-special-add-to-cart-btn {
+  background-color: #49A6A2; 
+  color: white;
+  font-weight: 500;
+  padding: 5px 22px;
+  font-size: small;
+  border-radius: 5px;
+}
+
+.new-product-special-discount {
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  background-color: #49A6A2; 
+  color: white;
+  font-weight: 500;
+  padding: 5px 10px;
+  font-size: small;
+  border-right: 1px solid #49A6A2;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.new-product-special-heart {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+}
+
+.new-product-special-data {
+  padding-top: 5px;
+}
+
+.new-product-special-data:hover {
+  transform: translateY(-15px);
+    transition: transform 0.5s ease-in-out;
+}
+
+.new-product-special-swiper .swiper-button-next,
+.new-product-special-swiper .swiper-button-prev {
+  display: block; 
+  color: #333; 
+  background-color: rgba(255, 255, 255, 0.8); 
+  width: 40px;
+  height: 40px; 
+  border-radius: 50%; 
+}
+
+.new-product-special-swiper .swiper-button-next::after,
+.new-product-special-swiper .swiper-button-prev::after {
+  font-size: 24px;
+}
+
+.new-product-special-swiper .swiper-button-next.swiper-button-disabled,
+.new-product-special-swiper .swiper-button-prev.swiper-button-disabled {
+  opacity: 0.5; 
+  pointer-events: none; 
+}
+
+.new-product-special-swiper .swiper-button-next,
+.new-product-special-swiper .swiper-button-prev {
+  z-index: 10;
+}
