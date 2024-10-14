@@ -1,7 +1,7 @@
 import express from 'express';
 import axios from 'axios';
 import cors from 'cors';
-
+import qs from 'qs';
 const app = express();
 const BASE_URL = 'https://alphasilver.productsalphawizz.com/app/v1/api';
 

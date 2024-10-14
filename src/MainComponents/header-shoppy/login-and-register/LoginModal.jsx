@@ -76,10 +76,10 @@ const LoginModal = ({ onClose }) => {
       try {
         const response = await axios.post(
           "https://alpha-shoppy.vercel.app/api/login",
-          qs.stringify({ mobile: formData.mobile, password: formData.password }), // Convert data to URL-encoded format
+          { mobile: formData.mobile, password: formData.password },
           {
             headers: {
-              'Content-Type': 'application/x-www-form-urlencoded', // URL-encoded headers
+              'Content-Type': 'application/json', // Update the content type accordingly
             },
           }
         );
