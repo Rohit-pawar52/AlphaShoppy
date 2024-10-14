@@ -75,7 +75,7 @@ const LoginModal = ({ onClose }) => {
     } else if (!errors.mobile && !errors.password && formData.mobile.length === 10) {
       try {
         const response = await axios.post(
-          "https://alphasilver.productsalphawizz.com/app/v1/api/login",
+          "https://alpha-shoppy.vercel.app/api/login",
           qs.stringify({ mobile: formData.mobile, password: formData.password }), // Convert data to URL-encoded format
           {
             headers: {
@@ -137,7 +137,7 @@ const LoginModal = ({ onClose }) => {
       if (verified) {
         try {
           const response = await axios.post(
-            "https://alphasilver.productsalphawizz.com/app/v1/api/register_user",
+            "https://alpha-shoppy.vercel.app/api/register_user",
             qs.stringify(formDataRegister), 
             {
               headers: {

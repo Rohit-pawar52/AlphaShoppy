@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./HomePage.css";
 import axios from 'axios';
-import CategoryShoppy from "../category-page/CategoryShoppy";
+import CategoryShoppy from "../../Filter-components/category-page/CategoryShoppy";
 import ProductShoppy from "../product-shoppy/ProductShoppy";
 import BodyFooter from "../body-footer/BodyFooter";
-import NewProductsShoppy from "../new-products-shoppy/NewProductsShoppy";
-import OfferProductsShoppy from "../Offer-products-shoppy/OfferProductsShoppy";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
 import { Navigation, Autoplay } from 'swiper/modules';
-import FilterProductShoppy from "../../Filter-components/product-shoppy/FilterProductShoppy";
 
 
 function Home() {
@@ -19,7 +16,7 @@ function Home() {
  
   
   useEffect(() => {
-    // axios.get('https://alphasilver.productsalphawizz.com/app/v1/api/get_slider_images')
+    // axios.post('https://alpha-shoppy.vercel.app/api/get_slider_images')
     //   .then(response => {
     //     const imageUrls = response.data.data.map(item => item.image);
     //     setImages(imageUrls);

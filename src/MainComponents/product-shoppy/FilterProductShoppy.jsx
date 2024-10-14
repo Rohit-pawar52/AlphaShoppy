@@ -2,7 +2,6 @@ import {Link, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
-import "./FilterProductShoppy.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -37,9 +36,7 @@ function FilterProductShoppy() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post(
-          "https://alphasilver.productsalphawizz.com/app/v1/api/get_products"
-        );
+        const response = await axios.post("https://alpha-shoppy.vercel.app/api/get_products");
         if (response.data && response.data.data) {
           setCategories(response.data.data);
         } else {

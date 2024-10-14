@@ -30,7 +30,7 @@ function ProductIndividualShoppy() {
 
   return (
     <>
-      <div className="product-individual-filter-head flex justify-between px-3">
+      <div className="product-individual-filter-head flex justify-between px-3 bg-black">
         <div className="left">
           <span className="h3">{filteredCategory[0]?.name}</span>
         </div>

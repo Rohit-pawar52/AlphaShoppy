@@ -4,13 +4,10 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
-import "./ProductShoppy.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
-import { FaChevronLeft } from "react-icons/fa";
-import { FaChevronRight } from "react-icons/fa";
 
 function ProductShoppy() {
   const [productsData, setProductsData] = useState([]); // Initialize as an empty array
@@ -19,29 +16,26 @@ function ProductShoppy() {
   useEffect(() => {  
     const fetchSections = async () => {
       try {
-        const response = await axios.post(
-          "https://alphasilver.productsalphawizz.com/app/v1/api/get_sections"
-        );
-
-        const updatedData = response.data.data.map((item) => {
-          console.log(response.data.data)
-          // Create an updated structure that includes product details and title
-          return {
+        const response = await axios.post("https://alpha-shoppy.vercel.app/api/get_sections");
+        if (response.data && response.data.data) {
+          const updatedData = response.data.data.map((item) => ({
             title: item.title,
             short_description: item.short_description,
             product_details: item.product_details,
-          };
-        });
-
-        console.log(updatedData); // Ensure data is coming as expected
-        setProductsData(updatedData); // Set the correct data
+          }));
+          setProductsData(updatedData);
+        } else {
+          console.error("Unexpected response structure:", response.data);
+        }
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching sections:", err.message);
       }
     };
+    
 
     fetchSections();
   }, []);
+  
 
   // Handle navigation to product description
   const navigate = useNavigate();

@@ -18,9 +18,7 @@ const CategoryShoppy = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.post(
-          "https://alphasilver.productsalphawizz.com/app/v1/api/get_categories"
-        );
+        const response = await axios.post("https://alpha-shoppy.vercel.app/api/get_categories");
         setCategories(response.data.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -34,7 +32,9 @@ const CategoryShoppy = () => {
       return filteritem.id == e.target.id;
     });
     navigate(`/NavbarCategory/${FilterCategory.name}`, {
-      state: FilterCategory,
+      state: { data: FilterCategory }, 
+    // navigate(`/NavbarCategory/${FilterCategory.name}`, {
+    //   state: FilterCategory,
     });
   }
 
