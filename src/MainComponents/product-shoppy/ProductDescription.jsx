@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
@@ -11,197 +11,184 @@ import { Navigation } from "swiper/modules";
 function ProductDescription() {
   const location = useLocation();
   const filteredCategory = location.state;
-  const category = filteredCategory.productCategory;
-  const categories = filteredCategory.productsData;
-  console.log("whole",filteredCategory);
-  console.log("category",category);
-  console.log("filter",categories);
+  const [category, setCategories] = useState(filteredCategory.productCategory);
+  const categories = filteredCategory.productsData || [];
 
   const [quantity, setQuantity] = useState(1);
-
   const handleQuantityChange = (change) => {
     if (quantity + change > 0) {
       setQuantity(quantity + change);
     }
   };
+
   const navigate = useNavigate();
-  const swiperRef = useRef(null);
   function ProductClick(e) {
     const targetId = e.target.id;
-    const ProductCategory = categories.filter((filteritem) => {
+    const ProductCategory = categories.flatMap(section => section.product_details) 
+    .find((filteritem) => {
       return filteritem.id === targetId.toString();
     });
-    console.log("abhi", ProductCategory);
-
-    navigate(`/ProductDescription/${ProductCategory[0].name}`, {
-      state: { ProductCategory, categories },
-    });
+    setCategories(ProductCategory);
   }
 
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); // Pick a random index from 0 to i
+      [array[i], array[j]] = [array[j], array[i]]; // Swap the elements
+    }
+    return array;
+  }
+
+  const shuffledArr = shuffleArray(categories);
+console.log(category)
   return (
     <>
-      <div className="product-individual-filter-head flex justify-between px-3">
-        <div className="left">
-          <span className="h3">{category.name}</span>
-        </div>
-        <div className="right">
-          <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+      <div className="grid justify-center md:flex md:justify-between bg-[#14949d59] px-3 p-5">
+        <span className="text-2xl font-semibold text-center">
+          {category.name.toUpperCase()}
+        </span>
+        <div>
+          <Link to="/">
             <span
-              className="list-inline-item"
               onClick={() => {
                 window.scroll(0, 0);
               }}
             >
-              Home
+              Products
             </span>
           </Link>{" "}
           /
           <Link
             to="/AllCategoriesShoppy"
-            style={{ textDecoration: "none", color: "black" }}
             onClick={() => {
               window.scroll(0, 0);
             }}
           >
             <span> Category</span>
           </Link>
-          <span className="ps-2" style={{ color: "grey" }}>
-            {" "}
-            / Products
-          </span>
+          <span className="ps-2 text-gray-400">/ {category.category_name}</span>
         </div>
       </div>
-      <div className="product-individual-filter flex justify-center item-center">
-        <div className="product-individual-filter-swiper mx-4">
-          <div className="product-individual-filter-slide p-5">
-            {/* <ReactImageMagnify className="product-individual-filter-image"
-              {...{
-                smallImage: {
-                  alt: "Product Image",
-                  width: 250,
-                  height: 300,
-                  src: category.image,
-                },
-                largeImage: {
-                  src: category.image,
-                  width: 550,
-                  height: 500,
-                },
-                enlargedImagePosition: "beside",
-                isHintEnabled: true,
-                lensStyle: { backgroundColor: "rgba(0,0,0,.8)" },
-                enlargedImageContainerStyle: {
-                  marginLeft: "20px",
-                  backgroundColor: "white",
-                },
-                enlargedImageContainerDimensions: {
-                  width: "400px",
-                  height: "400px",
-                },
-                enlargedImageStyle: {
-                  objectFit: "cover",
-                },
-              }}
-            /> */}
-            <img src={category.image} alt="" className="h-96"/>
-            <button className="prev-arrow">&#10094;</button>
-            <button className="next-arrow">&#10095;</button>
+      <div className="grid md:grid-cols-2 justify-start md:justify-center mx-2 md:mx-10 my-2">
+        <div className="relative grid justify-center">
+          <img src={category.image} alt="" className="h-64 ms-16 mt-5 md:m-10" />
+          <div className="hidden md:block">
+            <button className="custom-prev-product">&#10094;</button>
+            <button className="custom-next-product">&#10095;</button>
           </div>
         </div>
 
-        <div className="product-individual-filter-slide pt-5 ">
-          <div className="product-individual-filter">
-            <h3 className="product-individual-filter-name">{category.name}</h3>
-            <p className="product-individual-filter-name">{category.name}</p>
-            <p className="border"></p>
-            <div className="product-reviews">
-              <span className="stars">★★★★★</span>
-              <br></br>
-              <span className="reviews text-center">( 0 Reviews )</span>
-            </div>
-            <div className="product-pricing">
-              <span className="price h3">
-                ₹ {category.min_max_price.special_price.toFixed(2)}
+        <div className="p-2">
+          <p className="text-2xl font-semibold leading-8">
+            {category.category_name}
+          </p>
+          <p>{category.name}</p>
+          <p className="border mb-2"></p>
+          <div className="flex gap-2 items-center opacity-40">
+            <span className="text-3xl">★★★★★</span>
+            <span className="text-lg">( 0 Reviews )</span>
+          </div>
+          <div className="flex gap-3 my-3">
+            <p className="text-2xl">
+              ₹ {category.min_max_price.special_price.toFixed(2)}
+            </p>
+            <p className="text-xl text-red-600 line-through mt-[-5px]">
+              ₹{category.min_max_price.max_price.toFixed(0)}
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <input
+              type="text"
+              placeholder="Zipcode"
+              className="border border-gray-300 focus:outline-[#49A6A2] px-3 py-1 w-32 md:w-auto"
+            />
+            <button className="border border-[#49A6A2] px-3 py-1 text-[#49A6A2] rounded-md hover:bg-[#49A6A2] hover:text-white">
+              Check Availability
+            </button>
+          </div>
+          <div className="grid grid-cols-3 justify-evenly border-2 w-32 p-1 my-3">
+            <button onClick={() => handleQuantityChange(-1)}>-</button>
+            <input type="text" value={quantity} readOnly className="ms-3" />
+            <button onClick={() => handleQuantityChange(1)}>+</button>
+          </div>
+          <div className="flex gap-2">
+            <button className="border-2 border-[#49A6A2] px-2 md:px-3 py-2 text-[#49A6A2] rounded-md hover:bg-[#49A6A2] hover:text-white">
+              <FontAwesomeIcon icon={faCartPlus} /> Add to Cart
+            </button>
+            <button className="border-2 border-[#ed5446] px-2 md:px-3 py-2 text-[#ed5446] rounded-md hover:bg-[#ed5446] hover:text-white">
+              <FontAwesomeIcon icon={farHeart} /> Add to Favorite
+            </button>
+          </div>
+          <div className="flex gap-5 my-2 items-center">
+            <span>
+              Seller{" "}
+              <span className="text-[#49A6A2]">{category.seller_name}</span>
+            </span>
+            <span>
+              Tags{" "}
+              <span className="bg-slate-400 rounded-md px-1 text-sm">
+                {category.tags}
               </span>
-              <span className="original-price">
-                {category.min_max_price.max_price.toFixed(0)}
-              </span>
-            </div>
-            <div className="zipcode-check">
-              <input type="text" placeholder="Zipcode" />
-              <button>Check Availability</button>
-            </div>
-            <div className="product-quantity">
-              <button onClick={() => handleQuantityChange(-1)}>-</button>
-              <input type="text" value={quantity} readOnly />
-              <button onClick={() => handleQuantityChange(1)}>+</button>
-            </div>
-            <div className="product-actions">
-              <button className="product-individual-filter-add-to-cart-btn">
-                {" "}
-                <FontAwesomeIcon icon={faCartPlus} /> Add to Cart
-              </button>
-              <button className="add-to-favorite">
-                {" "}
-                <FontAwesomeIcon icon={farHeart} />
-                Add to Favorite
-              </button>
-            </div>
-            <div className="seller-info">
-              <span>
-                Seller{" "}
-                <span style={{ color: "blue" }}>{category.seller_name}</span>
-              </span>
-            </div>
-            <div className="product-tags">
-              <span className="tag">Tags</span>
-              <span className="tag-item">{category.tags}</span>
-            </div>
+            </span>
           </div>
         </div>
       </div>
-      <center className="h3 p-3">Related Products</center>
+      <center className="text-3xl p-3">Related Products</center>
       <Swiper
-        modules={[Navigation]}
-        spaceBetween={0}
-        slidesPerView={5}
-        navigation
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper;
+        pagination={{
+          clickable: true,
         }}
-        className="product-swiper mx-5"
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 4,
+            spaceBetween: 40,
+          },
+          1024: {
+            slidesPerView: 5,
+            spaceBetween: 0,
+          },
+        }}
+        navigation={true}
+        modules={[Navigation]}
+        className="my-5"
       >
-        {categories.map((category1, index) => (
-          category1.product_details.map((category,index)=>{
-          <SwiperSlide
-            key={`${category.id}-${index}`}
-            className="product-slide px-5"
-          >
-            <img
-              src={category.image}
-              alt={category.name}
-              id={category.id}
-              onClick={ProductClick}
-              className="product-image"
-            />
-            <span className="product-discount">
-              {category.min_max_price.discount_in_percentage}% OFF
-            </span>
-            <span className="product-heart">
-              <FontAwesomeIcon icon={farHeart} />
-            </span>
-            <div className="product-data">
-              <h3 className="product-name">{category.name}</h3>
-              <h5 className="product-price">
-                &#x20B9; {category.min_max_price.special_price.toFixed(2)}
-              </h5>
-              <button className="add-to-cart-btn mb-2">
-                <FontAwesomeIcon icon={faCartPlus} /> Add to Cart
-              </button>
-            </div>
-          </SwiperSlide>
-          })
-      ))}
+        {categories.map((category1) =>
+          category1.product_details.map((category, index) => (
+            <SwiperSlide
+              key={index}
+              className="text-center border relative grid justify-center rounded-md p-2 cursor-pointer"
+            >
+              <img
+                src={category.image}
+                alt={category.name}
+                id={category.id}
+                onClick={ProductClick}
+                className="h-52 md:h-48"
+              />
+              <span className="top-2 left-2 absolute md:top-6 md:left-8 bg-[#49A6A2] text-white px-2 rounded-e-md">
+                {category.min_max_price.discount_in_percentage}% OFF
+              </span>
+              <span className="top-2 right-2 absolute md:top-6 md:right-8">
+                <FontAwesomeIcon icon={farHeart} />
+              </span>
+              <div className="hover:bg-white hover:translate-y-[-10px] hover:delay-300 hover:cursor-grab group leading-7">
+                <p className="text-xl font-semibold group-hover:text-[#49A6A2]">
+                  {category.name}
+                </p>
+                <h5 className="font-semibold">
+                  &#x20B9; {category.min_max_price.special_price.toFixed(2)}
+                </h5>
+                <button className="bg-[#49A6A2] rounded-md px-3 py-1">
+                  <FontAwesomeIcon icon={faCartPlus} /> Add to Cart
+                </button>
+              </div>
+            </SwiperSlide>
+          ))
+        )}
       </Swiper>
     </>
   );

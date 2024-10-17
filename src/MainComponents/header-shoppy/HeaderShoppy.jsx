@@ -38,26 +38,14 @@ function HeaderShoppy() {
     fetchCategories();
   }, []);
 
-  // Handle category clicks
-const handleCategoryClick = (e, isAll = false) => {
-  if (isAll) {
-    // Navigate with all categories when "See All" is clicked
-    navigate("/NavbarCategory", {
-      state: { data: categories }, // Pass all categories data
+  function CategoryNameClick(e) {
+    const FilterCategory = categories.find((filteritem) => {
+      return filteritem.id == e.target.id;
     });
-  } else {
-    // Find the specific category by ID and navigate with its data
-    const filterCategory = categories.find(
-      (category) => category.id == e.target.id
-    );
-    if (filterCategory) {
-      navigate(`/NavbarCategory/${filterCategory.name}`, {
-        state: { data: filterCategory }, // Pass specific category data
-      });
-    }
+    navigate(`/NavbarCategory/${FilterCategory.name}`, {
+      state: FilterCategory,
+    });
   }
-};
-
 
   // Toggle sidebar for mobile devices
   const toggleSidebar = () => {
@@ -132,23 +120,22 @@ const handleCategoryClick = (e, isAll = false) => {
 
       {/* Categories section for desktop */}
       <div className="hidden md:flex md:items-center md:justify-evenly md:bg-[#49A6A2] md:text-white md:font-semibold md:text-lg">
-  {/* See All categories */}
-  <div>
-    <p onClick={(e) => handleCategoryClick(e, true)} >
-    <FontAwesomeIcon icon={faBars} /> See All |
-    </p>
-  </div>
-  
-  {/* First 7 categories */}
-  {categories.slice(0, 7).map((category) => (
-    <div key={category.id} className="p-2">
-      <p id={category.id} onClick={handleCategoryClick}>
-        {category.name}
-      </p>
-    </div>
-  ))}
-</div>
+        {/* See All categories */}
+        <div>
+          <Link to="/AllCategoriesShoppy">
+            <FontAwesomeIcon icon={faBars} /> See All |
+          </Link>
+        </div>
 
+        {/* First 7 categories */}
+        {categories.slice(0, 7).map((category) => (
+          <div key={category.id} className="p-2">
+            <p id={category.id} onClick={CategoryNameClick}>
+              {category.name}
+            </p>
+          </div>
+        ))}
+      </div>
 
       {/* Modal for login */}
       {showModal && <LoginModal onClose={toggleModal} />}

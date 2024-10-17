@@ -1,87 +1,89 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 function NavbarCategory() {
   const location = useLocation();
-  const categories = location.state.data;
-  console.log(categories)
+  const categories = location.state;
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const filteredCategory = location.state;
-  const [categoriestosend, setCategories] = useState([]);
-
+  const [products, setProducts] = useState();
   useEffect(() => {
-    axios.post("https://alpha-shoppy.vercel.app/api/get_categories").then(response=>{
-      setCategories(response.data.data);
-    }).catch(err=>{
-      console.log(err)
-    })
-}, []);
+    axios
+      .post("https://alpha-shoppy.vercel.app/api/get_products")
+      .then((response) => {
+        setProducts(response.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   function ProductClick(e) {
-    const FilterCategory = categoriestosend.filter(
+    const FilterCategory = products.filter(
       (filteritem) => filteritem.category_id == e.target.id
     );
-    localStorage.setItem("filteredCategory", JSON.stringify(FilterCategory));
-    navigate(`/FilterProductShoppy/${filteredCategory.name}`, {
-      state: FilterCategory,
-    });
+    if (FilterCategory.length !== 0) {
+      localStorage.setItem("filteredCategory", JSON.stringify(FilterCategory));
+      navigate(`/FilterProductShoppy/${filteredCategory.name}`, {
+        state: FilterCategory,
+      });
+    }
   }
-
-
 
   return (
     <div>
-      {Array.isArray(categories) ? (
-        // Display all categories
-        categories.map((category) => (
-          <div key={category.id}>
-            <h2>{category.name}</h2>
-            <img src={category.image} alt="" />
-            {/* Render the category items here */}
-          </div>
-        ))
-      ) : (
-        // Display a single category
-        <div className="All-clothes-head">
-        <div className="clothing-head flex justify-between px-3">
-          <div className="left">
-            <span className="h3">{categories.name}</span>
-          </div>
-          <div className="right">
-          <Link to="/" style={{textDecoration:"none",color:"black"}}><span className="list-inline-item" onClick={()=>{window.scroll(0,0)}}>Home</span></Link> /
-          <Link to="/AllCategoriesShoppy" style={{textDecoration:"none",color:"black"}} onClick={()=>{window.scroll(0,0)}}><span> Category</span></Link>
-            <span className="ps-2" style={{ color: "grey", cursor: "pointer" }}>
-              / {categories.name}
-            </span>
+      <>
+        <div className="grid justify-center md:flex md:justify-between bg-[#14949d59] px-3 p-5">
+          <span className="text-2xl font-semibold text-center">
+            {categories.name}
+          </span>
+          <div className="">
+            <Link to="/">
+              <span
+                onClick={() => {
+                  window.scroll(0, 0);
+                }}
+              >
+                Home
+              </span>
+            </Link>{" "}
+            /
+            <Link
+              to="/AllCategoriesShoppy"
+              onClick={() => {
+                window.scroll(0, 0);
+              }}
+            >
+              <span> Category</span>
+            </Link>
+            <span className="ps-2 text-gray-400">/ Products</span>
           </div>
         </div>
-        <div className="all-clothes-body mx-5 p-3">
-          <h3 className="mt-4">{categories.name} Category</h3>
-          <div className="all-clothes mt-4">
-            {
-            categories.children.map((categoryitem) => {
+        <div className="border border-gray-200 rounded-md m-8 p-5">
+          <p className="font-semibold text-2xl mt-10 m-auto text-center md:text-left">
+            {categories.name} Category
+          </p>
+          <div className="flex flex-wrap justify-center md:justify-start items-center text-center gap-16 border border-gray-200 rounded-md p-5 my-5">
+            {categories.children.map((categoryitem) => {
               return (
                 <>
-                <div key={categoryitem.id} className="all-clothes-slide px-5">
-                  <img
-                    src={categoryitem.image}
-                    alt={categoryitem.name}
-                    className="all-clothes-image"
-                    id={categoryitem.id}
-                    onClick={ProductClick}
+                  <div key={categoryitem.id} className="cursor-pointer">
+                    <img
+                      src={categoryitem.image}
+                      alt={categoryitem.name}
+                      className="w-32 h-32 rounded-full border-2 border-[#49A6A2]"
+                      id={categoryitem.id}
+                      onClick={ProductClick}
                     />
-                  <h3 className="all-clothes-name">{categoryitem.name}</h3>
-                </div>
+                    <p>{categoryitem.name}</p>
+                  </div>
                 </>
-              )
-            })
-            }
+              );
+            })}
           </div>
         </div>
-      </div>
-
-      )}
+      </>
     </div>
   );
 }

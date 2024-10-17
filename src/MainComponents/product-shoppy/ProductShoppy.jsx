@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,8 +10,7 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 
 function ProductShoppy() {
-  const [productsData, setProductsData] = useState([]); // Initialize as an empty array
-  const swiperRef = useRef(null);
+  const [productsData, setProductsData] = useState([]); 
 
   useEffect(() => {  
     const fetchSections = async () => {
@@ -90,7 +89,7 @@ function ProductShoppy() {
                    >
                   {section.product_details && section.product_details.map((category, catIndex) => (
                     <SwiperSlide key={`${category.id}-${catIndex}`}>
-                      <div className="text-center border relative grid justify-center rounded-md p-2">
+                      <div className="text-center border relative grid justify-center rounded-md p-2 cursor-pointer">
                       <img
                         src={category.image}
                         alt={category.name}
@@ -101,15 +100,15 @@ function ProductShoppy() {
                       <p className="top-2 left-2 absolute md:top-6 md:left-8 bg-[#49A6A2] text-white px-2 rounded-e-md">
                         {category.min_max_price?.discount_in_percentage || 0}% OFF
                       </p>
-                      <span className="top-2 right-2 absolute md:top-6 md:right-8 ">
+                      <span className="top-2 right-2 absolute md:top-6 md:right-8">
                         <FontAwesomeIcon icon={farHeart} />
                       </span>
-                      <div className="product-data">
-                        <h5>{category.name}</h5>
+                      <div className="hover:bg-white hover:translate-y-[-10px] hover:delay-300 hover:cursor-grab group leading-7">
+                        <p className="text-xl font-semibold group-hover:text-[#49A6A2]">{category.name}</p>
                         <h6 className="font-semibold">
                           &#x20B9; {(category.min_max_price?.special_price || 0).toFixed(2)}
                         </h6>
-                        <button className="add-to-cart-btn">
+                        <button className="bg-[#49A6A2] rounded-md px-3 py-1">
                           <FontAwesomeIcon icon={faCartPlus} /> Add to Cart
                         </button>
                       </div>
@@ -123,7 +122,7 @@ function ProductShoppy() {
               <>
               <div className="grid grid-cols-2 md:grid-cols-6 my-4">
                 {section.product_details && section.product_details.slice(0, 5).map((category, catIndex) => (
-                  <div key={`${category.id}-${catIndex}`} className="text-center border relative grid justify-center rounded-md p-2">
+                  <div key={`${category.id}-${catIndex}`} className="text-center border relative grid justify-center rounded-md p-2 cursor-pointer">
                     <img
                       src={category.image}
                       alt={category.name}
@@ -137,12 +136,12 @@ function ProductShoppy() {
                     <span className="top-0 right-1 absolute md:top-6 md:right-2">
                       <FontAwesomeIcon icon={farHeart} />
                     </span>
-                    <div className="product-data">
-                      <h5>{category.name}</h5>
+                    <div className="hover:bg-white hover:translate-y-[-10px] hover:delay-300 hover:cursor-grab group leading-7">
+                      <p className="text-xl font-semibold group-hover:text-[#49A6A2]">{category.name}</p>
                       <p className="font-semibold">
                         &#x20B9; {(category.min_max_price?.special_price || 0).toFixed(2)}
                       </p>
-                      <button className="add-to-cart-btn">
+                      <button className="bg-[#49A6A2] rounded-md px-3 py-1">
                         <FontAwesomeIcon icon={faCartPlus} /> Add to Cart
                       </button>
                     </div>

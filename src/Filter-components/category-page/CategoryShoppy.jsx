@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -11,7 +11,6 @@ import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
 
 const CategoryShoppy = () => {
-  const swiperRef = useRef(null);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
@@ -32,9 +31,7 @@ const CategoryShoppy = () => {
       return filteritem.id == e.target.id;
     });
     navigate(`/NavbarCategory/${FilterCategory.name}`, {
-      state: { data: FilterCategory }, 
-    // navigate(`/NavbarCategory/${FilterCategory.name}`, {
-    //   state: FilterCategory,
+      state: FilterCategory,
     });
   }
 
@@ -79,7 +76,7 @@ const CategoryShoppy = () => {
             <FaChevronRight />
           </div>
           {categories.map((item) => (
-            <div>
+            <div key={item.id}>
               <SwiperSlide>
                 <img
                   src={item.image}

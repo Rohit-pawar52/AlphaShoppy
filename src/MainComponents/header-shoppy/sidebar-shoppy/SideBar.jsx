@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import './SideBar.css';
 import { FaBoxOpen } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
@@ -11,14 +12,14 @@ import { FaEnvelope } from "react-icons/fa";
 
 const SideBar = ({ isOpen, toggleSidebar }) => {
   const menuItems = [
-    { Icon: FaBoxOpen, name: "Products" },
-    { Icon: CgProfile, name: "My Account" },
-    { Icon: FaHistory, name: "My Orders" },
-    { Icon: CiHeart, name: "Favorite" },
-    { Icon: FaSignInAlt, name: "Login" },
-    { Icon: FaUserCheck, name: "Register" },
-    { Icon: FaInfo, name: "About Us" },
-    { Icon: FaEnvelope, name: "Contact Us" },
+    { Icon: FaBoxOpen, name: "Products", target: "/"},
+    { Icon: CgProfile, name: "My Account", target: "/" },
+    { Icon: FaHistory, name: "My Orders", target: "/" },
+    { Icon: CiHeart, name: "Favorite", target: "/" },
+    { Icon: FaSignInAlt, name: "Login", target: "/" },
+    { Icon: FaUserCheck, name: "Register", target: "/" },
+    { Icon: FaInfo, name: "About Us", target: "/AboutShoppy" },
+    { Icon: FaEnvelope, name: "Contact Us", target: "/ContactShoppy" },
   ];
   
   return (
@@ -28,11 +29,12 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           &times;
         </button>
         {menuItems.map((item, index) => {
-          const Icon = item.Icon; // Get the Icon from the item
+          const Icon = item.Icon; 
           return (
             <div key={index} className="menu-item flex items-center gap-3" onClick={toggleSidebar}>
-              <Icon /> 
-              {item.name}
+              <Link to={item.target}>
+              <Icon /> {item.name}
+              </Link>
             </div>
           );
         })}

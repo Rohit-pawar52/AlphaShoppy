@@ -13,12 +13,7 @@ app.use(express.json());
 const createApiRoute = (endpoint) => {
   app.post(`/api/${endpoint}`, async (req, res) => {
     console.log("Request Body:", req.body);
-    // try {
-    //   const response = await axios.post(`${BASE_URL}/${endpoint}`, req.body);
-    //   res.json(response.data);
-      
     try {
-      // Convert request body to URL-encoded format
       const formData = qs.stringify(req.body);
       const response = await axios.post(`${BASE_URL}/${endpoint}`, formData, {
         headers: {

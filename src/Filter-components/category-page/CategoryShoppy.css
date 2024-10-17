@@ -1,3 +1,4 @@
+/* for category and products swiper */
 .custom-prev,
 .custom-next {
   background-color:#09a69b;
@@ -26,4 +27,30 @@
 .swiper-button-disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+
+
+/* for single products on productdescription */
+.custom-prev-product,
+.custom-next-product {
+  height: 30px;
+  width: 30px;
+  font-size: 50px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-100%);
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-prev-product {
+  left: 10px;
+}
+
+.custom-next-product {
+  right: 25px;
 }

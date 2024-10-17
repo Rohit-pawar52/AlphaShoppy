@@ -48,15 +48,39 @@ function FilterProductShoppy() {
   
     fetchData();
   }, []);
+
+  const [productsData, setProductsData] = useState([]); // Initialize as an empty array
+  useEffect(() => {  
+    const fetchSections = async () => {
+      try {
+        const response = await axios.post("https://alpha-shoppy.vercel.app/api/get_sections");
+        if (response.data && response.data.data) {
+          const updatedData = response.data.data.map((item) => ({
+            title: item.title,
+            short_description: item.short_description,
+            product_details: item.product_details,
+          }));
+          setProductsData(updatedData);
+        } else {
+          console.error("Unexpected response structure:", response.data);
+        }
+      } catch (err) {
+        console.error("Error fetching sections:", err.message);
+      }
+    };
+    
+
+    fetchSections();
+  }, []);
   
   function ProductClick(e) {
     const targetId = e.target.id; 
-    const FilterCategory = categories.filter((filteritem) => {
+    const productCategory = categories.find((filteritem) => {
       return filteritem.id === targetId.toString();
     });
-  
-    navigate(`/ProductIndividualShoppy/${filteredCategory[0]?.name}`, {
-      state: FilterCategory,
+  console.log(productsData)
+    navigate(`/ProductDescription/${filteredCategory[0]?.name}`, {
+      state: {productCategory, productsData},
     });
   }
 
@@ -66,27 +90,45 @@ function FilterProductShoppy() {
   if (Array.isArray(filteredCategory)) {
     return (
       <>
-        <div className="clothing-head flex justify-between px-3">
-          <div className="left">
-            <span className="h3">{filteredCategory[0]?.category_name}</span>
+        <div className="grid justify-center md:flex md:justify-between bg-[#14949d59] px-3 p-5">
+            <span className="text-2xl font-semibold text-center">{filteredCategory[0].category_name}</span>
+            <div>
+              <Link to="/">
+                <span
+                  onClick={() => {
+                    window.scroll(0, 0);
+                  }}
+                >
+                  Home
+                </span>
+              </Link>{" "}
+              /
+              <Link
+                to="/AllCategoriesShoppy"
+                onClick={() => {
+                  window.scroll(0, 0);
+                }}
+              >
+                <span> Category</span>
+              </Link>
+              <span
+                className="ps-2 text-gray-400"
+              >
+                / Products
+              </span>
+            </div>
           </div>
-          <div className="right">
-          <Link to="/" style={{textDecoration:"none",color:"black"}}><span className="list-inline-item" onClick={()=>{window.scroll(0,0)}}>Home</span></Link>
-           /<Link to="/AllCategoriesShoppy" style={{textDecoration:"none",color:"black"}} onClick={()=>{window.scroll(0,0)}}><span> Category</span></Link>
-            <span className="ps-2" style={{ color: "grey" }}> / Products</span>
-          </div>
-        </div>
-        <div className="filter-products-container">
-          <div className="Seller-Shoppy-dropdowns px-5">
-            <div className="Seller-Shoppy-sort-dropdown">
-              <label htmlFor="Seller-Shoppy-sortby" className="Seller-Shoppy-dropdown-label pe-5">
+        <div className="bg-gray-50 m-5 p-5 md:m-12 md:p-10 border-2">
+          <div className="grid gap-5 justify-center md:flex md:justify-between m-5">
+            <div className="flex md:gap-5 items-center">
+              <label htmlFor="">
                 Sort By:
               </label>
               <select
-                id="Seller-Shoppy-sortby"
+                id=""
                 value={sortValue}
                 onChange={handleSortChange}
-                className="Seller-Shoppy-dropdown"
+                className="border-2 p-1"
               >
                 <option value="relevance">Relevance</option>
                 <option value="top-rated">Top Rated</option>
@@ -96,15 +138,15 @@ function FilterProductShoppy() {
                 <option value="price-high-low">Price - High To Low</option>
               </select>
             </div>
-            <div className="Seller-Shoppy-show-dropdown">
-              <label htmlFor="Seller-Shoppy-show-items" className="Seller-Shoppy-dropdown-label">
+            <div className="flex gap-5 items-center">
+              <label htmlFor="">
                 Show:
               </label>
               <select
-                id="Seller-Shoppy-show-items"
+                id=""
                 value={itemsToShow}
                 onChange={handleItemsChange}
-                className="Seller-Shoppy-dropdown"
+                className="border-2 p-1"
               >
                 <option value="12">12</option>
                 <option value="16">16</option>
@@ -113,32 +155,32 @@ function FilterProductShoppy() {
               </select>
             </div>
           </div>
-          <h2 className="ps-4">Products</h2>
-          <div className="filter-product-shoppy-swiper mx-4">
+          <p className="text-2xl md:m-5">Products</p>
+          <div className="grid md:flex gap-6 md:m-5">
             {filteredCategory.map((category, index) => (
               <div
                 key={`${category.id}-${index}`}
-                className="filter-product-shoppy-slide px-5 mb-5"
+                className="border-2 px-5 pb-2 relative text-center rounded-md cursor-pointer"
               >
                 <img
                   src={category.image}
                   alt={category.name}
                   id={category.id}
                   onClick={ProductClick}
-                  className="filter-product-shoppy-image"
+                  className="w-[250px h-[250px]"
                 />
-                <span className="filter-product-shoppy-discount">
+                <span className="top-2 left-2 absolute md:top-3 md:left-2 bg-[#49A6A2] text-white px-2 rounded-e-md">
                   {category.min_max_price.discount_in_percentage}% OFF
                 </span>
-                <span className="filter-product-shoppy-heart">
+                <span className="top-2 right-2 absolute md:top-3 md:right-1">
                   <FontAwesomeIcon icon={farHeart} />
                 </span>
-                <div className="filter-product-shoppy-data">
-                  <h3 className="filter-product-shoppy-name">{category.name}</h3>
-                  <h5 className="filter-product-shoppy-price">
+                <div className="hover:bg-white hover:translate-y-[-10px] hover:delay-300 hover:cursor-grab group leading-7">
+                  <h3 className="text-xl font-semibold group-hover:text-[#49A6A2]">{category.name}</h3>
+                  <h5 className="font-semibold">
                     &#x20B9; {category.min_max_price.special_price}
                   </h5>
-                  <button className="filter-product-shoppy-add-to-cart-btn mb-2">
+                  <button className="bg-[#49A6A2] rounded-md px-3 py-1">
                     <FontAwesomeIcon icon={faCartPlus} /> Add to Cart
                   </button>
                 </div>
