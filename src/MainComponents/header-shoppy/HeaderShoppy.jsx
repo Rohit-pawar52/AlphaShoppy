@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdPower } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
-import { FaCartPlus } from "react-icons/fa";
+import { FaCartPlus, FaSearch } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
-import { FaSearch } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import LoginModal from "./login-and-register/LoginModal";
@@ -15,6 +14,10 @@ function HeaderShoppy() {
   const [showModal, setShowModal] = useState(false);
   const [categories, setCategories] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [section, setSection] = useState([]);
+  const [filterSection, setFilterSection] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null); // Create a ref for the dropdown
   const navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -27,9 +30,7 @@ function HeaderShoppy() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.post(
-          "https://alpha-shoppy.vercel.app/api/get_categories"
-        );
+        const response = await axios.post("https://alpha-shoppy.vercel.app/api/get_categories");
         setCategories(response.data.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -38,18 +39,82 @@ function HeaderShoppy() {
     fetchCategories();
   }, []);
 
-  function CategoryNameClick(e) {
+  // Fetch sections from the API
+  useEffect(() => {
+    const fetchSections = async () => {
+      try {
+        const response = await axios.post("https://alpha-shoppy.vercel.app/api/get_sections");
+        if (response.data && response.data.data) {
+          const updatedData = response.data.data.map((item) => ({
+            title: item.title,
+            short_description: item.short_description,
+            product_details: item.product_details,
+          }));
+          setSection(updatedData);
+        } else {
+          console.error("Unexpected response structure:", response.data);
+        }
+      } catch (err) {
+        console.error("Error fetching sections:", err.message);
+      }
+    };
+
+    fetchSections();
+  }, []);
+
+  // Handle search input change
+  const handleInputChange = (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    if (searchTerm !== "") {
+      const filteredData = section
+        .flatMap((item) => item.product_details)
+        .filter((category) => category.name.toLowerCase().includes(searchTerm));
+      console.log(filteredData);
+      setFilterSection(filteredData);
+      setIsDropdownOpen(true); // Open dropdown when there are results
+    } else {
+      setFilterSection([]);
+      setIsDropdownOpen(false); // Close dropdown when input is empty
+    }
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsDropdownOpen(false); // Close dropdown if click is outside
+    }
+  };
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // to naviage to navbarvategory
+  const CategoryNameClick = (e) => {
     const FilterCategory = categories.find((filteritem) => {
       return filteritem.id == e.target.id;
     });
     navigate(`/NavbarCategory/${FilterCategory.name}`, {
       state: FilterCategory,
     });
-  }
+  };
 
   // Toggle sidebar for mobile devices
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  // for naviagating from search data to productdescription
+  const searchDataClick = (e) => {
+    const FilterCategory = categories.find((filteritem) => {
+      return filteritem.id == e.target.id;
+    });
+    navigate(`/NavbarCategory/${FilterCategory.name}`, {
+      state: FilterCategory,
+    });
   };
 
   return (
@@ -69,15 +134,37 @@ function HeaderShoppy() {
               />
             </Link>
             {/* Desktop search bar */}
-            <div className="hidden md:flex md:w-96 h-10 border-2 rounded-md md:justify-between md:items-center md:px-2">
+            <div className="hidden md:flex md:w-96 h-11 border-2 rounded-md md:justify-between md:items-center md:px-2 relative">
               <input
                 type="text"
                 className="outline-none"
                 placeholder="Search for products"
+                onChange={handleInputChange}
               />
               <FaSearch />
+              {/* search based data show */}
+              <div
+                ref={dropdownRef}
+                className={`${
+                  filterSection.length === 0 ? "hidden" : isDropdownOpen ? "block" : "hidden"
+                } absolute bg-white w-full top-16 left-0 z-10 rounded-md px-5 ${
+                  filterSection.length > 2 ? "h-64" : "h-auto"
+                } overflow-y-scroll`}
+              >
+                {filterSection.map((data) => (
+                  <div key={data.id} className="flex gap-5 my-5">
+                    <img src={data.image} alt="" className="h-16 w-14 rounded-md" />
+                    <div>
+                      <p className="text-xl">{data.name}</p>
+                      <p>In {data.category_name}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+
+          {/* userdata and icon */}
           <div className="hidden md:flex md:gap-3 md:items-center">
             {userData ? (
               <div className="flex items-center gap-1">
@@ -108,13 +195,33 @@ function HeaderShoppy() {
         </div>
 
         {/* Mobile search bar */}
-        <div className="flex flex-grow-1 w-full border-2 rounded-md items-center justify-between p-2 md:hidden">
+        <div className="flex flex-grow-1 w-full border-2 rounded-md items-center justify-between p-2 md:hidden relative">
           <input
             type="text"
             placeholder="Search for products"
             className="outline-none"
+            onChange={handleInputChange}
           />
           <FaSearch />
+          {/* search based data show */}
+          <div
+                ref={dropdownRef}
+                className={`${
+                  filterSection.length === 0 ? "hidden" : isDropdownOpen ? "block" : "hidden"
+                } absolute bg-white w-full top-16 left-0 z-10 rounded-md px-5 ${
+                  filterSection.length > 2 ? "h-64" : "h-auto"
+                } overflow-y-scroll`}
+              >
+                {filterSection.map((data) => (
+                  <div key={data.id} className="flex gap-5 my-5">
+                    <img src={data.image} alt="" className="h-16 w-14 rounded-md" />
+                    <div>
+                      <p className="text-xl">{data.name}</p>
+                      <p>In {data.category_name}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
         </div>
       </div>
 
