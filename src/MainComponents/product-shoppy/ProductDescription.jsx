@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
@@ -12,7 +12,14 @@ function ProductDescription() {
   const location = useLocation();
   const filteredCategory = location.state;
   const [category, setCategories] = useState(filteredCategory.productCategory);
+  // console.log(category)
   const categories = filteredCategory.productsData || [];
+  useEffect(() => {
+    if (location.state && location.state.productCategory) {
+      setCategories(location.state.productCategory); // Update category from location state
+    }
+  }, [location.state]); // Dependency array to re-run the effect on state change
+
 
   const [quantity, setQuantity] = useState(1);
   const handleQuantityChange = (change) => {
@@ -21,7 +28,6 @@ function ProductDescription() {
     }
   };
 
-  const navigate = useNavigate();
   function ProductClick(e) {
     const targetId = e.target.id;
     const ProductCategory = categories.flatMap(section => section.product_details) 
@@ -31,16 +37,16 @@ function ProductDescription() {
     setCategories(ProductCategory);
   }
 
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1)); // Pick a random index from 0 to i
-      [array[i], array[j]] = [array[j], array[i]]; // Swap the elements
-    }
-    return array;
-  }
+  // function shuffleArray(array) {
+  //   for (let i = array.length - 1; i > 0; i--) {
+  //     const j = Math.floor(Math.random() * (i + 1)); // Pick a random index from 0 to i
+  //     [array[i], array[j]] = [array[j], array[i]]; // Swap the elements
+  //   }
+  //   return array;
+  // }
 
-  const shuffledArr = shuffleArray(categories);
-console.log(category)
+  // const shuffledArr = shuffleArray(categories);
+// console.log(category)
   return (
     <>
       <div className="grid justify-center md:flex md:justify-between bg-[#14949d59] px-3 p-5">

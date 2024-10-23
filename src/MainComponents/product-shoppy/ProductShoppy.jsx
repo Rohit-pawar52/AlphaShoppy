@@ -41,7 +41,7 @@ function ProductShoppy() {
   const ProductClick = (e) => {
     const productCategory = productsData
       .flatMap(section => section.product_details) // Combine product_details arrays
-      .find((item) => item.id === e.target.id);
+      .filter((item) => item.id === e.target.id);
 
     if (productCategory) {
       navigate(`/ProductDescription/${productCategory.name}`, {

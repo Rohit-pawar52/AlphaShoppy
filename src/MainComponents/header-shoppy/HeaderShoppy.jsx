@@ -14,10 +14,12 @@ function HeaderShoppy() {
   const [showModal, setShowModal] = useState(false);
   const [categories, setCategories] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [section, setSection] = useState([]);
+  const [productsData, setSection] = useState([]);
   const [filterSection, setFilterSection] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null); // Create a ref for the dropdown
+  const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false); // Separate state for mobile dropdown
+  const dropdownRef = useRef(null); // Create a ref for desktop dropdown
+  const mobileDropdownRef = useRef(null); // Create a ref for mobile dropdown
   const navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -26,24 +28,13 @@ function HeaderShoppy() {
     setShowModal(!showModal);
   };
 
-  // Fetch categories from the API
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.post("https://alpha-shoppy.vercel.app/api/get_categories");
-        setCategories(response.data.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-    fetchCategories();
-  }, []);
-
   // Fetch sections from the API
   useEffect(() => {
     const fetchSections = async () => {
       try {
-        const response = await axios.post("https://alpha-shoppy.vercel.app/api/get_sections");
+        const response = await axios.post(
+          "https://alpha-shoppy.vercel.app/api/get_sections"
+        );
         if (response.data && response.data.data) {
           const updatedData = response.data.data.map((item) => ({
             title: item.title,
@@ -58,33 +49,63 @@ function HeaderShoppy() {
         console.error("Error fetching sections:", err.message);
       }
     };
-
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.post(
+          "https://alpha-shoppy.vercel.app/api/get_categories"
+        );
+        setCategories(response.data.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
     fetchSections();
   }, []);
 
-  // Handle search input change
+  // Handle search input change for desktop
   const handleInputChange = (e) => {
     const searchTerm = e.target.value.toLowerCase();
     if (searchTerm !== "") {
-      const filteredData = section
+      const filteredData = productsData
         .flatMap((item) => item.product_details)
         .filter((category) => category.name.toLowerCase().includes(searchTerm));
-      console.log(filteredData);
       setFilterSection(filteredData);
-      setIsDropdownOpen(true); // Open dropdown when there are results
+      setIsDropdownOpen(true);
     } else {
       setFilterSection([]);
-      setIsDropdownOpen(false); // Close dropdown when input is empty
+      setIsDropdownOpen(false);
+    }
+  };
+
+  // Handle search input change for mobile
+  const handleMobileInputChange = (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    if (searchTerm !== "") {
+      const filteredData = productsData
+        .flatMap((item) => item.product_details)
+        .filter((category) => category.name.toLowerCase().includes(searchTerm));
+      setFilterSection(filteredData);
+      setIsMobileDropdownOpen(true); // Open mobile dropdown
+    } else {
+      setFilterSection([]);
+      setIsMobileDropdownOpen(false);
     }
   };
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsDropdownOpen(false); // Close dropdown if click is outside
+      setIsDropdownOpen(false); // Close desktop dropdown if click is outside
+    }
+    if (
+      mobileDropdownRef.current &&
+      !mobileDropdownRef.current.contains(event.target)
+    ) {
+      setIsMobileDropdownOpen(false); // Close mobile dropdown if click is outside
     }
   };
 
-  // Close dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -107,14 +128,18 @@ function HeaderShoppy() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  // for naviagating from search data to productdescription
+  // for navigating from search data to product description
   const searchDataClick = (e) => {
-    const FilterCategory = categories.find((filteritem) => {
-      return filteritem.id == e.target.id;
-    });
-    navigate(`/NavbarCategory/${FilterCategory.name}`, {
-      state: FilterCategory,
-    });
+    const productCategory = productsData
+      .flatMap((section) => section.product_details)
+      .find((item) => item.id === e.target.id);
+    if (productCategory) {
+      navigate(`/ProductDescription/${productCategory.name}`, {
+        state: { productCategory, productsData },
+      });
+      setIsDropdownOpen(false);
+      setIsMobileDropdownOpen(false); // Close mobile dropdown
+    }
   };
 
   return (
@@ -142,25 +167,32 @@ function HeaderShoppy() {
                 onChange={handleInputChange}
               />
               <FaSearch />
-              {/* search based data show */}
-              <div
-                ref={dropdownRef}
-                className={`${
-                  filterSection.length === 0 ? "hidden" : isDropdownOpen ? "block" : "hidden"
-                } absolute bg-white w-full top-16 left-0 z-10 rounded-md px-5 ${
-                  filterSection.length > 2 ? "h-64" : "h-auto"
-                } overflow-y-scroll`}
-              >
-                {filterSection.map((data) => (
-                  <div key={data.id} className="flex gap-5 my-5">
-                    <img src={data.image} alt="" className="h-16 w-14 rounded-md" />
-                    <div>
-                      <p className="text-xl">{data.name}</p>
-                      <p>In {data.category_name}</p>
+              {/* Dropdown for desktop search */}
+              {isDropdownOpen && filterSection.length > 0 && (
+                <div
+                  ref={dropdownRef}
+                  className="absolute bg-white w-full top-16 left-0 z-10 rounded-md px-5"
+                >
+                  {filterSection.map((data) => (
+                    <div
+                      key={data.id}
+                      className="flex gap-5 my-5"
+                      onClick={searchDataClick}
+                    >
+                      <img
+                        src={data.image}
+                        id={data.id}
+                        alt=""
+                        className="h-16 w-14 rounded-md"
+                      />
+                      <div>
+                        <p className="text-xl">{data.name}</p>
+                        <p>In {data.category_name}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -200,28 +232,35 @@ function HeaderShoppy() {
             type="text"
             placeholder="Search for products"
             className="outline-none"
-            onChange={handleInputChange}
+            onChange={handleMobileInputChange}
           />
           <FaSearch />
-          {/* search based data show */}
-          <div
-                ref={dropdownRef}
-                className={`${
-                  filterSection.length === 0 ? "hidden" : isDropdownOpen ? "block" : "hidden"
-                } absolute bg-white w-full top-16 left-0 z-10 rounded-md px-5 ${
-                  filterSection.length > 2 ? "h-64" : "h-auto"
-                } overflow-y-scroll`}
-              >
-                {filterSection.map((data) => (
-                  <div key={data.id} className="flex gap-5 my-5">
-                    <img src={data.image} alt="" className="h-16 w-14 rounded-md" />
-                    <div>
-                      <p className="text-xl">{data.name}</p>
-                      <p>In {data.category_name}</p>
-                    </div>
+          {/* Dropdown for mobile search */}
+          {isMobileDropdownOpen && filterSection.length > 0 && (
+            <div
+              ref={mobileDropdownRef}
+              className="absolute bg-white w-full top-16 left-0 z-10 rounded-md px-5"
+            >
+              {filterSection.map((data) => (
+                <div
+                  key={data.id}
+                  className="flex gap-5 my-5"
+                  onClick={searchDataClick}
+                >
+                  <img
+                    src={data.image}
+                    id={data.id}
+                    alt=""
+                    className="h-16 w-14 rounded-md"
+                  />
+                  <div>
+                    <p className="text-xl">{data.name}</p>
+                    <p>In {data.category_name}</p>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
