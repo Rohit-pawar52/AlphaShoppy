@@ -78,7 +78,6 @@ function FilterProductShoppy() {
     const productCategory = categories.find((filteritem) => {
       return filteritem.id === targetId.toString();
     });
-  console.log(productsData)
     navigate(`/ProductDescription/${filteredCategory[0]?.name}`, {
       state: {productCategory, productsData},
     });
@@ -160,7 +159,7 @@ function FilterProductShoppy() {
             {filteredCategory.map((category, index) => (
               <div
                 key={`${category.id}-${index}`}
-                className="border-2 px-5 pb-2 relative text-center rounded-md cursor-pointer"
+                className="border-2 px-5 pb-2 relative text-center rounded-md cursor-pointer grid justify-center"
               >
                 <img
                   src={category.image}

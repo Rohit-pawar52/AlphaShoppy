@@ -64,10 +64,9 @@ function NavbarCategory() {
           <p className="font-semibold text-2xl mt-10 m-auto text-center md:text-left">
             {categories.name} Category
           </p>
-          <div className="flex flex-wrap justify-center md:justify-start items-center text-center gap-16 border border-gray-200 rounded-md p-5 my-5">
+          <div className="flex flex-wrap justify-center md:justify-start items-center gap-16 border border-gray-200 rounded-md p-5 my-5">
             {categories.children.map((categoryitem) => {
               return (
-                <>
                   <div key={categoryitem.id} className="cursor-pointer">
                     <img
                       src={categoryitem.image}
@@ -76,9 +75,8 @@ function NavbarCategory() {
                       id={categoryitem.id}
                       onClick={ProductClick}
                     />
-                    <p>{categoryitem.name}</p>
+                    <center>{categoryitem.name}</center>
                   </div>
-                </>
               );
             })}
           </div>

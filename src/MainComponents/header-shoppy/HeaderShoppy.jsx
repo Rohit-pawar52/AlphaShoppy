@@ -9,12 +9,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import LoginModal from "./login-and-register/LoginModal";
 import SideBar from "./sidebar-shoppy/SideBar";
+import Swal from 'sweetalert2'
 
 function HeaderShoppy() {
   const [showModal, setShowModal] = useState(false);
   const [categories, setCategories] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [productsData, setSection] = useState([]);
+  const [productsData, setProductsData] = useState([]);
   const [filterSection, setFilterSection] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false); // Separate state for mobile dropdown
@@ -41,7 +42,7 @@ function HeaderShoppy() {
             short_description: item.short_description,
             product_details: item.product_details,
           }));
-          setSection(updatedData);
+          setProductsData(updatedData);
         } else {
           console.error("Unexpected response structure:", response.data);
         }
@@ -218,7 +219,18 @@ function HeaderShoppy() {
               </button>
             )}
             <CiHeart className="hidden md:block text-2xl text-[#49A6A2]" />
-            <FaCartPlus className="text-2xl text-[#49A6A2]" />
+            <FaCartPlus className="text-2xl text-[#49A6A2]"  onClick={() => {
+                if (localStorage.getItem("user") !== null) {
+                  navigate("/cart");
+                } else {
+                  Swal.fire({
+                    title: 'Error!',
+                    text: 'Do you want to continue',
+                    icon: 'error',
+                    confirmButtonText: 'Cool'
+                  })
+                }
+              }}/>
           </div>
           {/* Mobile cart icon */}
           <div className="md:hidden">

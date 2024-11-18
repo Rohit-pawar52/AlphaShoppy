@@ -14,6 +14,8 @@ import PrivacyShoppy from './Footer-components/terms&cond/PrivacyShoppy';
 import FilterProductShoppy from './MainComponents/product-shoppy/FilterProductShoppy';
 import ProductDescription from './MainComponents/product-shoppy/ProductDescription';
 import LoginModal from './MainComponents/header-shoppy/login-and-register/LoginModal';
+import { Cart } from './redux/cart';
+
 const App = () => {
   return (
     <>
@@ -25,6 +27,7 @@ const App = () => {
         <Route path='/ProductShoppy' element={<  ProductShoppy/>} />
         <Route path='/AllCategoriesShoppy' element={<  AllCategoriesShoppy/>} />
         <Route path='/AboutShoppy' element={<  AboutShoppy/>} />
+        <Route path='/Cart' element={<  Cart/>} />
         <Route path='/ContactShoppy' element={<  ContactShoppy/>} />
         <Route path='/SellerShoppy' element={<  SellerShoppy/>} />
         <Route path='/NavbarCategory' element={<  NavbarCategory/>} />

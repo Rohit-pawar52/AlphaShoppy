@@ -8,9 +8,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
+import { useDispatch } from "react-redux";
+import { setCartData } from "../../redux/slicer";
+import Swal from 'sweetalert2'
 
 function ProductShoppy() {
   const [productsData, setProductsData] = useState([]); 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {  
     const fetchSections = async () => {
@@ -37,7 +42,6 @@ function ProductShoppy() {
   
 
   // Handle navigation to product description
-  const navigate = useNavigate();
   const ProductClick = (e) => {
     const productCategory = productsData
       .flatMap(section => section.product_details) // Combine product_details arrays
@@ -49,6 +53,31 @@ function ProductShoppy() {
       });
     }
   };
+
+//to send data to cart 
+  function handleAddToCartBtn(e) {
+    const id = e.target.id;
+    if (localStorage.getItem("user") === null) {
+      Swal.fire({
+        title: 'Login Error:',
+        text: 'Do you want to continue Please Login First!!!',
+        icon: 'error',
+        confirmButtonText: 'Okay'
+      })
+      return;
+    }else{
+      const findData = productsData
+      .flatMap(section => section.product_details) // Combine product_details arrays
+      .find((item) => item.id === e.target.id);
+      const productToAdd = { ...findData, count: 1 }; 
+      dispatch(setCartData(productToAdd));
+      Swal.fire({
+        title: 'Success',
+        text: 'Item Added!',
+        confirmButtonText: 'Okay'
+      })
+    }
+  }
 
   return (
     <>
@@ -108,7 +137,8 @@ function ProductShoppy() {
                         <h6 className="font-semibold">
                           &#x20B9; {(category.min_max_price?.special_price || 0).toFixed(2)}
                         </h6>
-                        <button className="bg-[#49A6A2] rounded-md px-3 py-1">
+                        <button className="bg-[#49A6A2] rounded-md px-3 py-1" onClick={handleAddToCartBtn}
+                    id={category.id}>
                           <FontAwesomeIcon icon={faCartPlus} /> Add to Cart
                         </button>
                       </div>
@@ -141,7 +171,8 @@ function ProductShoppy() {
                       <p className="font-semibold">
                         &#x20B9; {(category.min_max_price?.special_price || 0).toFixed(2)}
                       </p>
-                      <button className="bg-[#49A6A2] rounded-md px-3 py-1">
+                      <button className="bg-[#49A6A2] rounded-md px-3 py-1" onClick={handleAddToCartBtn}
+                    id={category.id}>
                         <FontAwesomeIcon icon={faCartPlus} /> Add to Cart
                       </button>
                     </div>

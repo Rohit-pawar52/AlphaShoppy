@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./HomePage.css";
 import axios from 'axios';
 import CategoryShoppy from "../../Filter-components/category-page/CategoryShoppy";
 import ProductShoppy from "../product-shoppy/ProductShoppy";

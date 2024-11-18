@@ -76,8 +76,7 @@ const CategoryShoppy = () => {
             <FaChevronRight />
           </div>
           {categories.map((item) => (
-            <div key={item.id}>
-              <SwiperSlide>
+              <SwiperSlide key={item.id}>
                 <img
                   src={item.image}
                   alt=""
@@ -87,7 +86,6 @@ const CategoryShoppy = () => {
                 />
                 <p className="text-center">{item.name}</p>
               </SwiperSlide>
-            </div>
           ))}
         </Swiper>
       </div>
